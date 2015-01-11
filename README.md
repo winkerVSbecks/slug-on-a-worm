@@ -1,2 +1,4 @@
-# slug-on-a-worm
+Slug on a Worm
+===
+
 It's a slug on a worm
