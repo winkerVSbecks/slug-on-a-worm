@@ -52,10 +52,6 @@ var buildBody = function(r, h) {
 
   if (debug) path.fullySelected = true;
 
-  var l = path.length;
-  var p1 = path.getPointAt(0.6 * l);
-
-  // path.insertSegments(3, [p1]);
   path.flatten(25);
   path.smooth();
 
