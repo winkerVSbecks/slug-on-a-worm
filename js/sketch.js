@@ -6,10 +6,16 @@ var colors = {
   lightPurple : '#AE86FF',
   red         : '#FF006B',
   yellow      : '#FFE500',
-  white       : '#FFFFFF'
+  white       : '#FFFFFF',
+  black       : '#262626',
+  grey        : '#ccc'
 };
 
+var KAPPA = 4 * (Math.sqrt(2) - 1) / 3;
+var debug = false;
+
 var worm, slug;
+var segmentLength;
 
 
 window.onload = function() {
@@ -34,13 +40,13 @@ window.onresize = function() {
 // Setup
 var setup = function() {
 
-  var canvas = getBrowserDimensions();
+  var size = getBrowserDimensions();
 
-  var sWorm = 0.5 * ((canvas.w >= canvas.h) ? canvas.h : canvas.w);
+  var sWorm = 0.5 * ((size.w >= size.h) ? size.h : size.w);
   var sSlug = Math.max(sWorm * 0.1, 30);
 
-  worm = new Worm(sWorm, paper.view.center, colors.green);
-  slug = new Slug(sSlug, paper.view.center, colors.purple);
+  worm = new Worm(size, paper.view.center);
+  // slug = new Slug(sSlug, paper.view.center, colors.purple);
 
 };
 
