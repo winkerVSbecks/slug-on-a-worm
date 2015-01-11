@@ -34,14 +34,15 @@ Worm.prototype.resize = function() {
 };
 
 
+
 // Build the body path
 var buildBody = function(r, h) {
 
-  var pathBody = new Path({
+  var path = new Path({
     fillColor: colors.green
   });
 
-  pathBody.segments = [
+  path.segments = [
     [0, h],
     [[0, h/2], null, [0, -r*KAPPA]],
     [[r, h/2 - r], [-r*KAPPA, 0], [r*KAPPA, 0 ]],
@@ -49,41 +50,50 @@ var buildBody = function(r, h) {
     [2*r, h]
   ];
 
-  if (debug) pathBody.fullySelected = true;
+  if (debug) path.fullySelected = true;
 
-  return pathBody;
+  var l = path.length;
+  var p1 = path.getPointAt(0.6 * l);
+
+  // path.insertSegments(3, [p1]);
+  path.flatten(25);
+  path.smooth();
+
+  return path;
 
 };
+
 
 
 // Build the eye path
 var buildEye = function(r, p) {
 
-  var pathEye = new Path.Circle({
+  var path = new Path.Circle({
     fillColor: colors.white,
     strokeColor: colors.grey,
     radius: r,
     position: p
   });
 
-  if (debug) pathEye.fullySelected = true;
+  if (debug) path.fullySelected = true;
 
-  return pathEye;
+  return path;
 
 };
+
 
 
 // Build the pupil path
 var buildPupil = function(r, p) {
 
-  var pathPupil = new Path.Circle({
+  var path = new Path.Circle({
     fillColor: colors.black,
     radius: r,
     position: p
   });
 
-  if (debug) pathPupil.fullySelected = true;
+  if (debug) path.fullySelected = true;
 
-  return pathPupil;
+  return path;
 
 };
