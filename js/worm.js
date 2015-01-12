@@ -26,10 +26,38 @@ var Worm = function(s, p, c) {
 
   this.all.position.x = paper.view.center.x;
 
+  this.initXs = [];
+  this.initYs = [];
+  for (var i = 23; i <= 30; i++) {
+    this.initXs.push(this.pathBody.segments[i].point.x - 20);
+    this.initYs.push(this.pathBody.segments[i].point.y + 20);
+  }
+
 };
 
 
-Worm.prototype.resize = function() {
+Worm.prototype.animate = function(t) {
+
+  for (var i = 23; i <= 30; i++) {
+    this.pathBody.segments[i].point.x = bounce(t,
+          this.initXs[i - 23],
+          20,
+          60);
+    this.pathBody.segments[i].point.y = bounce(t,
+          this.initYs[i - 23],
+          -20,
+          60);
+  }
+
+};
+
+
+Worm.prototype.reset = function(t) {
+
+  for (var i = 23; i <= 30; i++) {
+    this.pathBody.segments[i].point.x = this.initXs[i - 23];
+    this.pathBody.segments[i].point.y = this.initYs[i - 23];
+  }
 
 };
 
@@ -50,10 +78,12 @@ var buildBody = function(r, h) {
     [2*r, h]
   ];
 
-  if (debug) path.fullySelected = true;
+  if (debug) path.selected = true;
 
   path.flatten(25);
   path.smooth();
+
+  // 23-30
 
   return path;
 
@@ -92,4 +122,16 @@ var buildPupil = function(r, p) {
 
   return path;
 
+};
+
+
+
+// @t is the current time (or position) of the tween. This can be seconds or frames, steps, seconds, ms, whatever – as long as the unit is the same as is used for the total time [3].
+// @b is the beginning value of the property.
+// @c is the change between the beginning and destination value of the property.
+// @d is the total time of the tween.
+var bounce = function(t, b, c, d) {
+  var ts = (t /= d) * t;
+  var tc = ts * t;
+  return b + c * (33 * tc * ts + -106 * ts * ts + 126 * tc + -67 * ts + 15 * t);
 };

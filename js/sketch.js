@@ -12,10 +12,9 @@ var colors = {
 };
 
 var KAPPA = 4 * (Math.sqrt(2) - 1) / 3;
-var debug = false;
+var debug = true;
 
 var worm, slug;
-var segmentLength;
 
 
 window.onload = function() {
@@ -42,8 +41,8 @@ var setup = function() {
 
   var size = getBrowserDimensions();
 
-  var sWorm = 0.5 * ((size.w >= size.h) ? size.h : size.w);
-  var sSlug = Math.max(sWorm * 0.1, 30);
+  sWorm = 0.5 * ((size.w >= size.h) ? size.h : size.w);
+  sSlug = Math.max(sWorm * 0.1, 30);
 
   worm = new Worm(size, paper.view.center);
   // slug = new Slug(sSlug, paper.view.center, colors.purple);
@@ -52,7 +51,16 @@ var setup = function() {
 
 
 // Draw
+var t = 0;
 var draw = function(event) {
+
+  if (t < 60) {
+    t++;
+    worm.animate(t);
+  } else {
+    t = 0;
+    worm.reset();
+  }
 
 };
 
