@@ -12,9 +12,10 @@ var colors = {
 };
 
 var KAPPA = 4 * (Math.sqrt(2) - 1) / 3;
-var debug = true;
 
 var worm, slug;
+var animTime = 30;
+var debug = false;
 
 
 window.onload = function() {
@@ -54,7 +55,10 @@ var setup = function() {
 var t = 0;
 var draw = function(event) {
 
-  if (t < 60) {
+  if (event.count %3 === 0)
+    worm.animate(t);
+
+  if (t < animTime) {
     t++;
     worm.animate(t);
   } else {
