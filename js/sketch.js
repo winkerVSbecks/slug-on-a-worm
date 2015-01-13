@@ -13,7 +13,7 @@ var colors = {
 
 var KAPPA = 4 * (Math.sqrt(2) - 1) / 3;
 
-var worm, slug;
+var worm, slug, physics;
 var animTime = 30;
 var debug = false;
 
@@ -40,6 +40,8 @@ window.onresize = function() {
 // Setup
 var setup = function() {
 
+  initPhysics();
+
   var size = getBrowserDimensions();
 
   sWorm = 0.5 * ((size.w >= size.h) ? size.h : size.w);
@@ -55,16 +57,8 @@ var setup = function() {
 var t = 0;
 var draw = function(event) {
 
-  if (event.count %3 === 0)
-    worm.animate(t);
-
-  if (t < animTime) {
-    t++;
-    worm.animate(t);
-  } else {
-    t = 0;
-    worm.reset();
-  }
+  physics.update();
+  worm.update();
 
 };
 

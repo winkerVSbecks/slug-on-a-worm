@@ -36,56 +36,53 @@ var Worm = function(s, p, c) {
 
   this.all.position.x = paper.view.center.x;
 
-  this.initXs = [];
-  this.initYs = [];
-  // for (var i = 23; i <= 30; i++) {
-  //   this.initXs.push(this.pathBody.segments[i].point.x - 20);
-  //   this.initYs.push(this.pathBody.segments[i].point.y + 20);
-  // }
+  this.count = this.pathBody.segments.length;
+  this.initPhysics();
 
-  for (var i = 0; i < this.pathBody.segments.length; i++) {
-    this.initXs.push(this.pathBody.segments[i].point.x);
-    this.initYs.push(this.pathBody.segments[i].point.y);
-  }
+};
 
-  this.destXs = [];
-  this.destYs = [];
-  this.reset();
+
+// ---------------
+//  Init Physics
+// ---------------
+Worm.prototype.initPhysics = function(t) {
+
+  this.particles = [];
+  this.springs = [];
+
+  // First point is fixed
+  this.particles.push(buildParticle(this.pathBody.segments[0].point, true));
+
+  // Make particles
+  for (var i = 1; i < this.count - 1; i++) {
+    this.particles.push(buildParticle(this.pathBody.segments[i].point, false));
+  };
+
+  // Last point is fixed
+  this.particles.push(buildParticle(this.pathBody.segments[this.count-1].point, true));
+
+  // Make springs
+  for (var i = 1; i < this.count - 1; i++) {
+
+    if (i < this.count / 2) {
+      this.springs.push(buildSpring(this.particles[i], this.particles[this.count-1]));
+    } else {
+      this.springs.push(buildSpring(this.particles[i], this.particles[0]));
+    }
+
+  };
 
 };
 
 // ---------------
 //  Animation
 // ---------------
-var randomness = 5;
-Worm.prototype.animate = function(t) {
+Worm.prototype.update = function(t) {
 
-  // for (var i = 0; i < this.pathBody.segments.length; i++) {
-
-  //   // this.pathBody.segments[i].point.x = bounce(t,
-  //   //       this.initXs[i],
-  //   //       this.destXs[i],
-  //   //       animTime);
-  //   // this.pathBody.segments[i].point.y = bounce(t,
-  //   //       this.initYs[i],
-  //   //       this.destYs[i],
-  //   //       animTime);
-  //   this.pathBody.segments[i].point.x = this.initXs[i] + this.destXs[i];
-  //   this.pathBody.segments[i].point.y = this.initYs[i] + this.destYs[i];
-  // }
-
-  for (var i = 0; i < this.pathBody.segments.length; i++) {
-    this.pathBody.segments[i].point.x = bounce(t,
-          this.initXs[i] - 5,
-          5 + this.destXs[i],
-          60);
-    this.pathBody.segments[i].point.y = bounce(t,
-          this.initYs[i] + 20,
-          -20 + this.destYs[i],
-          60);
-  }
-
-  this.reset();
+  for (var i = 0; i < this.count; i++) {
+    this.pathBody.segments[i].point.x = this.particles[i].position.x;
+    this.pathBody.segments[i].point.y = this.particles[i].position.y;
+  };
 
 };
 
@@ -94,20 +91,6 @@ Worm.prototype.animate = function(t) {
 // ---------------
 Worm.prototype.reset = function(t) {
 
-  // for (var i = 23; i <= 30; i++) {
-  //   this.pathBody.segments[i].point.x = this.initXs[i - 23];
-  //   this.pathBody.segments[i].point.y = this.initYs[i - 23];
-  // }
-
-  this.destXs = [];
-  this.destYs = [];
-
-  for (var i = 0; i < this.pathBody.segments.length; i++) {
-
-    this.destXs.push( (Math.random() * randomness - randomness / 2) );
-    this.destYs.push( (Math.random() * randomness - randomness / 2) );
-
-  }
 
 };
 
@@ -116,17 +99,6 @@ Worm.prototype.reset = function(t) {
 // ---------------
 Worm.prototype.impact = function() {
 
-  for (var i = 1; i < this.pathBody.segments.length - 1; i++) {
-
-    this.pathBody.segments[i].point.x -= map(this.pathBody.segments[i].point.y, this.min.y, this.max.y, 200, 0);
-
-    var theta = map(this.pathBody.segments[i].point.y, this.min.y, this.max.y, 0, 5);
-
-    // if (i < this.pathBody.segments.length/2) theta = -theta;
-
-    this.pathBody.segments[i].point = this.pathBody.segments[i].point
-                                        .rotate(-theta, new Point(view.center.x, this.pathBody.segments[i].point.y));
-  }
 
 };
 
