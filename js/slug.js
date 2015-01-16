@@ -9,9 +9,28 @@ var Slug = function(s, p, c) {
     fillColor: c
   });
 
+  this.initPhysics();
+
 };
 
+// ---------------
+//  Init Physics
+// ---------------
+Slug.prototype.initPhysics = function(t) {
 
-Slug.prototype.resize = function() {
+  // Make particle
+  this.particle = buildParticle(this.path.position, false);
+
+};
+
+// ---------------
+//  Animation
+// ---------------
+Slug.prototype.update = function(t) {
+
+  this.path.position.x = this.particle.position.x;
+  this.path.position.y = this.particle.position.y;
+
+  // this.path.position.x = this.particle.position.x = this.particle.position.x - 5;
 
 };

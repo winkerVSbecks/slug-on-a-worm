@@ -27,11 +27,17 @@ var buildParticle = function(p, fixed) {
 
 
 // Build a spring
-var buildSpring = function(particle, origin) {
+var buildSpring = function(particle, origin, a) {
 
-  return physics.makeSpring(particle, origin,
+  var ooo = buildParticle(particle.position, true);
+
+  // return physics.makeSpring(particle, origin,
+  //                           strength, drag,
+  //                           dist(particle.position, origin.position));
+
+  return physics.makeSpring(particle, ooo,
                             strength, drag,
-                            randomNumber(1.005, 1.01)*dist(particle.position, origin.position));
+                            randomNumber(-1, 1));
 
 };
 

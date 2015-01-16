@@ -48,7 +48,7 @@ var setup = function() {
   sSlug = Math.max(sWorm * 0.1, 30);
 
   worm = new Worm(size, paper.view.center);
-  // slug = new Slug(sSlug, paper.view.center, colors.purple);
+  slug = new Slug(sSlug, paper.view.center.add([paper.view.size.width*0.5, 0]) , colors.purple);
 
 };
 
@@ -58,7 +58,8 @@ var t = 0;
 var draw = function(event) {
 
   physics.update();
-  worm.update();
+  slug.update();
+  worm.update(event);
 
 };
 

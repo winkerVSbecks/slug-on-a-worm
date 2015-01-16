@@ -69,7 +69,18 @@ Worm.prototype.initPhysics = function(t) {
     } else {
       this.springs.push(buildSpring(this.particles[i], this.particles[0]));
     }
+  };
 
+  // for (var i = 0; i < this.count; i++) {
+  //   this.pathBody.segments[i].point.x = this.particles[i].position.x = this.particles[i].position.x + randomNumber(-1, 1);
+  //   this.pathBody.segments[i].point.y = this.particles[i].position.y = this.particles[i].position.y + randomNumber(-1, 1);
+  // };
+
+  var half = Math.floor(this.count/2);
+
+  for (var i = half; i < half + 11; i++) {
+    this.particles[i].position.x = this.particles[i].position.x + -25;
+    this.particles[i].position.y = this.particles[i].position.y + 25;
   };
 
 };
@@ -83,6 +94,18 @@ Worm.prototype.update = function(t) {
     this.pathBody.segments[i].point.x = this.particles[i].position.x;
     this.pathBody.segments[i].point.y = this.particles[i].position.y;
   };
+
+  // t.count
+
+  // for (var i = 0; i < this.count; i++) {
+  //   this.pathBody.segments[i].point.x = this.particles[i].position.x;
+  //   this.pathBody.segments[i].point.y = this.particles[i].position.y;
+  // };
+
+  // console.log(t);
+  // debugger;
+
+  // bounce
 
 };
 
@@ -180,9 +203,4 @@ var bounce = function(t, b, c, d) {
 // Linear Scaling
 var map = function (n, start1, stop1, start2, stop2) {
   return (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
-};
-
-// Exponential Scaling
-var mapLn = function (n, start1, stop1, start2, stop2) {
-  return Math.pow(2.71828, map(n, start1, stop1, start2, stop2));
 };
